@@ -18,4 +18,10 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['pub_date']
     search_fields = ['question_text']
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra = extra_context or {}
+        extra['title'] = 'questionを編集'
+
+        return super(QuestionAdmin, self).change_view(request, object_id, form_url, extra_context=extra)
+
 admin.site.register(Question, QuestionAdmin)
