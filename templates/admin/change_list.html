@@ -90,8 +90,10 @@
       {% endblock %}
     </div>
 
+    {% block newpage %}
     <div>
       <a href="{% url 'admin:new-page' %}">new pageへ</a>
     </div>
+    {% endblock %}
   </div>
 {% endblock %}
