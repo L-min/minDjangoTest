@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from django.template.response import TemplateResponse
+from django.utils import timezone
+
+# from django.template.response import TemplateResponse
 
 from .models import Choice, Question
 from . import views
@@ -20,6 +22,8 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ("question_text", "pub_date", "was_published_recently")
     list_filter = ["pub_date"]
     search_fields = ["question_text"]
+    # actions = ["change_question_text", "make_published"]
+    actions = ["change_question_text"]
 
     # 編集ページ修正
     def change_view(self, request, object_id, form_url="", extra_context=None):
@@ -41,6 +45,16 @@ class QuestionAdmin(admin.ModelAdmin):
             )
         ]
         return my_urls + urls
+
+    @admin.action(description="question_textをotherに変更")
+    def change_question_text(modeladmin, request, queryset):
+        queryset.update(question_text="other")
+
+    # @admin.action(description="現在時刻で公開")
+    # def make_published(modeladmin, request, queryset):
+    #     now = timezone.now()
+
+    #     queryset.update(pub_date=now)
 
 
 admin.site.register(Question, QuestionAdmin)
